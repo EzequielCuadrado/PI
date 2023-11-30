@@ -28,11 +28,11 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    "Fecha de Nacimiento": {
+    FdN: {
       type: DataTypes.DATE,
       allowNull: false,
     },
-  },
-  {timeStamps: false}
-  );
+  },{
+    timeStamps: false
+  });
 };

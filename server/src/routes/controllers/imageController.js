@@ -10,7 +10,7 @@ const assignDefaultImage = async (driver) => {
                 imageby: "Unknown",
             };
         } catch(error) {
-            console.log('error imagen');
+            res.status(400).json({error: error.message});
         }
     }
 };

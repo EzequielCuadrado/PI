@@ -2,6 +2,8 @@ const express = require("express");
 const router = require("./routes");
 const morgan = require("morgan");
 const cors = require("cors");
+const {EventEmitter} = require('events');
+EventEmitter.defaultMaxListeners = 20;
 
 const server = express();
 
