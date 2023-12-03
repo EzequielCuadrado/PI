@@ -1,12 +1,12 @@
 const { Router } = require("express");
 const router = Router();
-const drivers = require('./getDrivers');
-const getDriversByName = require('./getDriversByName')
+const {getDrivers, createDriver} = require('./getDrivers');
 const teams = require('./getTeams')
+const getById = require('./getById')
 
-
-router.use('/drivers', drivers);
-router.use('/drivers/name?="..."', getDriversByName);
+router.get('/drivers', getDrivers);
+router.get('/drivers/:idDriver', getById);
+router.post('/driver', createDriver)
 router.use('/teams', teams);
 
 

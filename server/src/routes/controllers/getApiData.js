@@ -14,12 +14,13 @@ const getApiData = async() => {
                 Description: driver.description,
                 Dob: driver.dob,
                 Teams: driver.teams,
-            }
+            }         
         })
+        return data;
     }
     catch (error) {
-        throw error;
+        throw Error(error.message);
     }
 };
 
-module.exports = getApiData;
+module.exports = {getApiData};

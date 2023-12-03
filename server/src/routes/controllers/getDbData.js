@@ -1,10 +1,10 @@
 const {Driver, Team} = require('../../db.js');
 
 const getDbData = async () => {
-    const db = await Driver.findall({
+    const db = await Driver.findAll({
         include: {
-            model: Team,
-            attributes: ['name'],
+            model: Driver,
+            attributes: ['Nombre'],
             through: {
                 attributes: [],
             }
@@ -17,4 +17,4 @@ const getDbData = async () => {
     return drivers;
 };
 
-module.exports = getDbData
+module.exports = {getDbData}

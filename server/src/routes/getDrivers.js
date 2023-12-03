@@ -1,44 +1,45 @@
 const axios = require('axios');
 const URL = 'http://localhost:5000/drivers';
-const {Router} = require('express');
-const router = Router();
+
 const {assignDefaultImage} = require('./controllers/imageController');
-const {getSource} = require('./controllers/sourceController');
 const {Driver, Team} = require('../db')
 
 
 
 
-router.get('/', async (req, res) => {
+const getDrivers = async (req, res) => {
+    const {name} = req.query;
+    const allDrivers = await axios.get(URL);
     try {
-        const response = await axios.get(URL);
-        const drivers = response.data;
-        drivers.forEach(driver => assignDefaultImage(driver));
+        if(name){
+            const filteredDrivers = allDrivers.data.filter((driver) => driver.name.forename.toLowerCase().includes(name.toLowerCase()) || driver.name.surname.toLowerCase().includes(name.toLowerCase())).slice(0, 15);
+    
+                if (filteredDrivers.length > 0) {
+                    filteredDrivers.forEach(driver => assignDefaultImage(driver));
+                    res.status(200).json(filteredDrivers);
+        }
+                else {
+                    res.status(404).json({message: "No hay corredores con el nombre proporcionado"});
+        };
+        }
+        else{
+            const drivers = allDrivers.data;
+            drivers.forEach(driver => assignDefaultImage(driver));
+    
+            res.status(200).json(drivers);
 
-        res.status(200).json(drivers);
+        }
     }
     catch (error) {
         res.status(400).json({error: error.message});
     }
-});
+};
 
 
 
-router.get('/:idDriver', async (req, res) => {
-    const { idDriver } = req.params;
-    try {
-        const source = isNaN(idDriver) ? "db" : "api";
-        const driver = await getSource(idDriver, source);
-       
-        res.status(200).json(driver);
-    }
-    catch (error) {
-        res.status(400).json({error: error.message});
-        console.log("falla la funcion get by id");
-    }
-});
 
-router.post('/', async (req, res) => {
+
+const createDriver = async (req, res) => {
     try {
         const {
             Nombre,
@@ -69,7 +70,10 @@ router.post('/', async (req, res) => {
     catch (error) {
         res.status(400).json({error: error.message})
     }
-})
+}
 
-module.exports = router;
+module.exports = {
+    getDrivers,
+    createDriver
+};
 
